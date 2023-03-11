@@ -18,11 +18,10 @@ end
 
 
 def new_game
-  game_word = pick_word.upcase
-  @game_word_array = game_word.split('')
-  p game_word
+  @game_word = pick_word.upcase
+  @game_word_array = @game_word.split('')
   @failures = 0
-  @hidden_word = Array.new(game_word.length,'_')
+  @hidden_word = Array.new(@game_word.length,'_')
 end
 
 def get_player_guess
@@ -30,8 +29,8 @@ def get_player_guess
   guess_valid = false
 
     while !guess_valid do
-    puts "Enter your guess"
-    guess = gets.chomp.upcase
+      puts "Enter your guess"
+      guess = gets.chomp.upcase
     
       if guess.length != 1
         puts "Invalid Guess"
@@ -39,17 +38,21 @@ def get_player_guess
         guess_valid = true
       end
     
-  end
+    end
   guess
   
 end
 
 
 def valid_letter?(letter)
+
     if @game_word_array.include? letter
       replace_hidden(letter)
-    else
+    elsif !@incorrect_letters.include? letter
+      @incorrect_letters << letter << " "
       @failures += 1
+    else
+      puts "Something went wrong, you shouldn't be here"
     end
     @guesses += 1
 end
@@ -87,24 +90,27 @@ end
 
 def check_end_conditions
   if @hidden_word === @game_word_array
-    in_progress = false
     puts "Game Over, You Win!"
+    return false
   end
 
   if @failures == 6
     draw(@failures)
-    in_progress = false
+    puts "The word was #{@game_word}"
     puts "Game over, You Lose"
+    return false
   end
+  true
 end
 
 def hangman
 
   @failures = 0
-  @incorrect_letter = ""
+  @incorrect_letters = ""
   @guesses = 0
+  @game_word
   @game_word_array = []
-  @hidden_word = {}
+  @hidden_word = []
   @guessed_letters = Array.new
   
   in_progress = true
@@ -118,7 +124,7 @@ def hangman
     p @hidden_word
     valid_letter?(get_player_guess)
     
-    check_end_conditions
+    in_progress = check_end_conditions
 
   end
 
@@ -130,6 +136,8 @@ hangman
 
 
 def save_game
+
+end
 
 def load_game
 

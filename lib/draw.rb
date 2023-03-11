@@ -2,7 +2,7 @@ def draw(failures)
   clear
   hang_array = ["
     +----+     Guesses: #{@guesses}
-    |    |
+    |    |     #{@incorrect_letters}
     |    
     |   
     |   
@@ -10,7 +10,7 @@ def draw(failures)
     ========",
     "
     +----+     Guesses: #{@guesses}
-    |    |
+    |    |     #{@incorrect_letters}
     |    0
     |   
     |   
@@ -18,7 +18,7 @@ def draw(failures)
     ========",
     "
     +----+     Guesses: #{@guesses}
-    |    |
+    |    |     #{@incorrect_letters}
     |    0
     |    |
     |   
@@ -26,7 +26,7 @@ def draw(failures)
     ========",
     "
     +----+     Guesses: #{@guesses}
-    |    |
+    |    |     #{@incorrect_letters}
     |    0
     |   /|
     |   
@@ -34,7 +34,7 @@ def draw(failures)
     ========",
     "
     +----+     Guesses: #{@guesses}
-    |    |
+    |    |     #{@incorrect_letters}
     |    0
     |   /|\\
     |   
@@ -42,7 +42,7 @@ def draw(failures)
     ========",
     "
     +----+     Guesses: #{@guesses}
-    |    |
+    |    |     #{@incorrect_letters}
     |    0
     |   /|\\
     |   / 
@@ -50,7 +50,7 @@ def draw(failures)
     ========",  
     "
     +----+     Guesses: #{@guesses}
-    |    |
+    |    |     #{@incorrect_letters}
     |    0
     |   /|\\
     |   / \\
