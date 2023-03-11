@@ -6,10 +6,6 @@ def clear
   system('clear')
 end
 
-def select_game_type
-
-end
-
 def pick_word
   word = ""
   word_list = File.readlines('google-10000-english-no-swears.txt')
@@ -22,11 +18,11 @@ end
 
 
 def new_game
-  @game_word = pick_word.upcase
-  p @game_word
+  game_word = pick_word.upcase
+  @game_word_array = game_word.split('')
+  p game_word
   @failures = 0
-  @hidden_word = Array.new(@game_word.length,'_')
-  p @hidden_word
+  @hidden_word = Array.new(game_word.length,'_')
 end
 
 def get_player_guess
@@ -42,32 +38,32 @@ def get_player_guess
       else  
         guess_valid = true
       end
-    guess
+    
   end
-end
-
-
-def compare_guess(letter)
+  guess
   
 end
+
 
 def valid_letter?(letter)
-  puts letter
+    if @game_word_array.include? letter
+      replace_hidden(letter)
+    else
+      @failures += 1
+    end
+    @guesses += 1
+end
+
+def replace_hidden(letter)
+  @game_word_array.each_with_index do |element, index|
+    if letter == element
+      @hidden_word[index] = letter
+    end
+  end
 end
   
-
-def hangman
-
-  @failures = 0
-  @guesses = 0
-  @game_word = ""
-  @hidden_word = {}
-  @guessed_letters = Array.new
-  
-
+def select_game_type
   in_progress = false
-  
-  p 'Welcome to hang man!'
 
   while !in_progress do
 
@@ -76,7 +72,7 @@ def hangman
     game_type = gets.chomp
 
     if game_type.to_i == 1
-      #clear
+      clear
       in_progress = true
       new_game
     elsif game_type.to_i == 2
@@ -87,39 +83,44 @@ def hangman
      puts 'Try Again'
     end
   end
+end
+
+def check_end_conditions
+  if @hidden_word === @game_word_array
+    in_progress = false
+    puts "Game Over, You Win!"
+  end
+
+  if @failures == 6
+    draw(@failures)
+    in_progress = false
+    puts "Game over, You Lose"
+  end
+end
+
+def hangman
+
+  @failures = 0
+  @incorrect_letter = ""
+  @guesses = 0
+  @game_word_array = []
+  @hidden_word = {}
+  @guessed_letters = Array.new
   
+  in_progress = true
+
+  select_game_type
+  
+  p 'Welcome to hang man!'  
   
   while in_progress
+    draw(@failures)
+    p @hidden_word
     valid_letter?(get_player_guess)
-
-    in_progress = false
+    
+    check_end_conditions
 
   end
-  #variables
-    #word
-    #number of guesses
-    #failures
-    #win
-    #guessed letters
-  
-  #start or load
-
-  #start
-  #Pick random word greater than 5 letters less than 11
-  #display word _ and hang man
-  # +----+
-  # |    |
-  # |    0
-  # |   /|\
-  # |   / \
-  # | 
-  # ========
-
-  #Player picks letter
-  #check if letter is correct
-  #if correct add to display
-  #else add to hangman and decrement timer
-
 
 end
 
@@ -128,6 +129,7 @@ hangman
 
 
 
+def save_game
 
 def load_game
 

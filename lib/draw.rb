@@ -1,5 +1,5 @@
 def draw(failures)
-  #system("clear")
+  clear
   hang_array = ["
     +----+     Guesses: #{@guesses}
     |    |
@@ -36,7 +36,7 @@ def draw(failures)
     +----+     Guesses: #{@guesses}
     |    |
     |    0
-    |   /|\
+    |   /|\\
     |   
     | 
     ========",
@@ -44,7 +44,7 @@ def draw(failures)
     +----+     Guesses: #{@guesses}
     |    |
     |    0
-    |   /|\
+    |   /|\\
     |   / 
     | 
     ========",  
@@ -52,9 +52,11 @@ def draw(failures)
     +----+     Guesses: #{@guesses}
     |    |
     |    0
-    |   /|\
-    |   / \
+    |   /|\\
+    |   / \\
     | 
     ========"]
     puts hang_array[failures]
 end
+
+
