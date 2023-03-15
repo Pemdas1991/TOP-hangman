@@ -1,5 +1,6 @@
 require_relative 'draw.rb'
 require 'pry'
+require 'msgpack'
 
 
 def clear
@@ -29,10 +30,12 @@ def get_player_guess
   guess_valid = false
 
     while !guess_valid do
-      puts "Enter your guess"
+      puts "Enter your guess, Type 'save' to save your game."
       guess = gets.chomp.upcase
     
-      if guess.length != 1
+      if guess.upcase == 'SAVE'
+        save_game
+      elsif guess.length != 1
         puts "Invalid Guess"
       else  
         guess_valid = true
@@ -78,12 +81,16 @@ def select_game_type
       clear
       in_progress = true
       new_game
-    elsif game_type.to_i == 2
+    end
+
+    if game_type.to_i == 2
       clear
-      puts 'Loading not yet implemented try again'
-    else
-      clear
-     puts 'Try Again'
+      if File.exists?("save.txt")
+        in_progress = true
+        load_game
+      else
+        puts "Save does not exist!"
+      end
     end
   end
 end
@@ -116,9 +123,7 @@ def hangman
   in_progress = true
 
   select_game_type
-  
-  p 'Welcome to hang man!'  
-  
+    
   while in_progress
     draw(@failures)
     p @hidden_word
@@ -131,14 +136,42 @@ def hangman
 end
 
 
-hangman
-
-
 
 def save_game
+
+  msg = {
+    :failures => @failures, 
+    :incorrect_letters => @incorrect_letters, 
+    :guesses => @guesses,
+    :game_word => @game_word,
+    :game_word_array => @game_word_array,
+    :hidden_word => @hidden_word,
+    :guessed_letters => @guessed_letters
+  }.to_msgpack
+
+  File.binwrite('save.txt',msg)
+
+  puts "Game has been saved"
+  puts "Good Bye"
+  exit(0)
 
 end
 
 def load_game
 
+  msg = File.binread('save.txt')
+  obj = MessagePack.unpack(msg)
+
+  @failures = obj['failures']
+  @incorrect_letters = obj['incorrect_letters']
+  @guesses = obj['guesses']
+  @game_word = obj['game_word']
+  @game_word_array = obj['game_word_array']
+  @hidden_word = obj['hidden_word']
+  @guessed_letters = obj['guessed_letters']
+
+  File.delete('save.txt')
+
 end
+
+hangman
